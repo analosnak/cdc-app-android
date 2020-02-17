@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import br.com.caelum.casadocodigo.R
 import br.com.caelum.casadocodigo.model.Autor
+import br.com.caelum.casadocodigo.web.AutorWebClient
 import kotlinx.android.synthetic.main.activity_autor.*
 
 class AutorActivity : AppCompatActivity() {
@@ -18,11 +19,10 @@ class AutorActivity : AppCompatActivity() {
 
     private fun pegaDadosDoAutor(): Autor {
         val nome = nome_autor.text.toString()
-        val email = email_autor.text.toString()
-        val descricao = descricao_autor.text.toString()
+        val linkGithub = linkGithub_autor.text.toString()
 
-        val autor = Autor(nome, email, descricao)
-        Log.i("AUTOR", "dados do autor: $nome, $email, $descricao")
+        val autor = Autor(nome, linkGithub)
+        Log.i("AUTOR", "dados do autor: $nome, $linkGithub")
 
         return autor
     }
@@ -35,6 +35,7 @@ class AutorActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.salva_autor) {
             val autor = pegaDadosDoAutor()
+            AutorWebClient().salva(autor)
         }
         return false
     }

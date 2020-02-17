@@ -38,33 +38,11 @@
         app:layout_constraintTop_toBottomOf="@id/input_nome_autor">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email_autor"
+            android:id="@+id/linkGithub_autor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_descricao_autor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        app:boxBackgroundMode="outline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_email_autor">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descricao_autor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Descrição"
-            android:inputType="textMultiLine"
-            android:singleLine="false" />
+            android:hint="GitHub"
+            android:inputType="textUri" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
