@@ -24,7 +24,7 @@ class AutorWebClient {
                 if (response.isSuccessful) {
                     Log.i("SUCESSO", "autor ${autor.nome} salvo")
                 } else {
-                    Log.i("FALHA", "autor ${autor.nome} não rolou ${response?.raw()}")
+                    Log.i("FALHA", "autor ${autor.nome} não rolou ${response.raw()}")
                 }
             }
 
@@ -33,7 +33,7 @@ class AutorWebClient {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://4191c1a9.ngrok.io")
+            .baseUrl("https://baee2a8c.ngrok.io")
             .addConverterFactory(JacksonConverterFactory.create())
             .build()
     }

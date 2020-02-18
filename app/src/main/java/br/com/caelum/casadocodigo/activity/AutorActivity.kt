@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.casadocodigo.R
 import br.com.caelum.casadocodigo.model.Autor
-import br.com.caelum.casadocodigo.web.AutorWebClient
+import br.com.caelum.casadocodigo.viewmodel.AutorViewModel
+import br.com.caelum.casadocodigo.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_autor.*
 
 class AutorActivity : AppCompatActivity() {
+    private val autorViewModel: AutorViewModel by lazy {
+        ViewModelProvider(this, ViewModelFactory).get(AutorViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,7 @@ class AutorActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.salva_autor) {
             val autor = pegaDadosDoAutor()
-            AutorWebClient().salva(autor)
+            autorViewModel.salva(autor)
         }
         return false
     }
