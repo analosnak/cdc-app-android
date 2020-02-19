@@ -27,9 +27,11 @@ class AutorActivity : AppCompatActivity() {
         autorViewModel.erroGithubLink.observe(this, Observer { linkGithub_autor.error = it })
 
         autorViewModel.formValido.observe(this, Observer { valido ->
-            if (valido) {
-                val autor = pegaDadosDoAutor()
-                autorViewModel.salva(autor)
+            valido?.let {
+                if (valido) {
+                    val autor = pegaDadosDoAutor()
+                    autorViewModel.salva(autor)
+                }
             }
         })
     }

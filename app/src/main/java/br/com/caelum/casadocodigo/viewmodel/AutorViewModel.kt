@@ -34,20 +34,21 @@ class AutorViewModel private constructor(private val autorRepository: AutorRepos
         if (nome.isBlank()) {
             nomeValido.postValue(false)
             erroNome.postValue("O nome é obrigatório")
+        } else {
+            nomeValido.postValue(true)
         }
-        nomeValido.postValue(true)
     }
 
     private fun validaUrl(githubLink: String) {
-        if (!Patterns.WEB_URL.matcher(githubLink).matches()) {
-            githubLinkValido.postValue(false)
-            erroGithubLink.postValue("URL inválida")
-        }
         if (githubLink.isBlank()) {
             githubLinkValido.postValue(false)
             erroGithubLink.postValue("A URL é obrigatória")
+        } else if (!Patterns.WEB_URL.matcher(githubLink).matches()) {
+            githubLinkValido.postValue(false)
+            erroGithubLink.postValue("URL inválida")
+        } else {
+            githubLinkValido.postValue(true)
         }
-        githubLinkValido.postValue(true)
     }
 
     fun salva(autor: Autor) = autorRepository.salva(autor)
