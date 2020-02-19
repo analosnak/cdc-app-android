@@ -6,22 +6,44 @@ import android.util.Log
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.URLUtil
+import androidx.core.view.get
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.casadocodigo.R
 import br.com.caelum.casadocodigo.model.Autor
 import br.com.caelum.casadocodigo.viewmodel.AutorViewModel
-import br.com.caelum.casadocodigo.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_autor.*
 
 class AutorActivity : AppCompatActivity() {
     private val autorViewModel: AutorViewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory).get(AutorViewModel::class.java)
+        ViewModelProvider(this, AutorViewModel.Factory).get(AutorViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_autor)
+
+        autorViewModel.erroNome.observe(this, Observer { nome_autor.error = it })
+        autorViewModel.erroGithubLink.observe(this, Observer { linkGithub_autor.error = it })
+
+        autorViewModel.formValido.observe(this, Observer { valido ->
+            if (valido) {
+                val autor = pegaDadosDoAutor()
+                autorViewModel.salva(autor)
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_autor, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.salva_autor) {
+            autorViewModel.validaForm(nome_autor.text.toString(), linkGithub_autor.text.toString())
+        }
+        return false
     }
 
     private fun pegaDadosDoAutor(): Autor {
@@ -32,49 +54,5 @@ class AutorActivity : AppCompatActivity() {
         Log.i("AUTOR", "dados do autor: $nome, $linkGithub")
 
         return autor
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_autor, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.salva_autor) {
-            if(isCamposValidos()) {
-                val autor = pegaDadosDoAutor()
-                autorViewModel.salva(autor)
-            }
-        }
-        return false
-    }
-
-    private fun isCamposValidos(): Boolean {
-        var totalErros = 0
-        totalErros += validaNome()
-        totalErros += validaUrl()
-
-        return totalErros == 0
-    }
-
-    private fun validaNome(): Int {
-        if (nome_autor.text.isNullOrBlank()) {
-            nome_autor.error = "O nome é obrigatório"
-            return 1
-        }
-        return 0
-    }
-
-    private fun validaUrl(): Int {
-        var qtdErros = 0
-        if (!Patterns.WEB_URL.matcher(linkGithub_autor.text.toString()).matches()) {
-            linkGithub_autor.error = "URL inválida"
-            qtdErros++
-        }
-        if (linkGithub_autor.text.isNullOrBlank()) {
-            linkGithub_autor.error = "URL é obrigatória"
-            qtdErros++
-        }
-        return qtdErros
     }
 }
