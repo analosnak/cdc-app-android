@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Casa Do Codigo</string>
+    <string name="nome_autor_hint">Nome</string>
+    <string name="github_autor_hint">GitHub</string>
 </resources>
