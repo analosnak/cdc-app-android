@@ -16,7 +16,10 @@ class AutorViewModel private constructor(private val autorRepository: AutorRepos
     val erroGithubLink = MutableLiveData<String>()
 
     fun validaForm(nomeAutor: String, linkgithubAutor: String) {
-        if (isNomeValido(nomeAutor) && isUrlValida(linkgithubAutor)) {
+        val nomeEhValido = isNomeValido(nomeAutor)
+        val urlEhValida = isUrlValida(linkgithubAutor)
+        
+        if (nomeEhValido && urlEhValida) {
             autorValido.postValue(Autor(nomeAutor, linkgithubAutor))
         }
     }
