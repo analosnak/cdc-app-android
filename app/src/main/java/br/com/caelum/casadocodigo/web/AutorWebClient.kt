@@ -10,11 +10,11 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-class AutorWebClient {
-    fun salva(autor: Autor) {
-        val retrofit = getRetrofit()
+class AutorWebClient(retrofit: Retrofit) {
+    private val autorService = retrofit.create(AutorService::class.java)
 
-        val autorService = retrofit.create(AutorService::class.java)
+    fun salva(autor: Autor) {
+
         autorService.salva(autor).enqueue(object : Callback<Unit?> {
             override fun onFailure(call: Call<Unit?>, t: Throwable) {
                 Log.e("ERRO", "Não comunicou com o servidor", t)
@@ -29,13 +29,6 @@ class AutorWebClient {
             }
 
         })
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://439eb8e8.ngrok.io")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build()
     }
 
 }
