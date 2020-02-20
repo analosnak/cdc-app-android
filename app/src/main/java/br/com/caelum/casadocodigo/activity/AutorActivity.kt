@@ -13,6 +13,7 @@ import br.com.caelum.casadocodigo.viewmodel.AutorViewModel
 import kotlinx.android.synthetic.main.activity_autor.*
 
 class AutorActivity : AppCompatActivity() {
+    
     private val autorViewModel: AutorViewModel by lazy {
         ViewModelProvider(this, AutorViewModel.Factory).get(AutorViewModel::class.java)
     }
@@ -37,15 +38,5 @@ class AutorActivity : AppCompatActivity() {
             autorViewModel.validaForm(nome_autor.text.toString(), linkGithub_autor.text.toString())
         }
         return false
-    }
-
-    private fun pegaDadosDoAutor(): Autor {
-        val nome = nome_autor.text.toString()
-        val linkGithub = linkGithub_autor.text.toString()
-
-        val autor = Autor(nome, linkGithub)
-        Log.i("AUTOR", "dados do autor: $nome, $linkGithub")
-
-        return autor
     }
 }
