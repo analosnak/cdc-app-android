@@ -33,7 +33,7 @@ class AutorWebClient {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://baee2a8c.ngrok.io")
+            .baseUrl("https://439eb8e8.ngrok.io")
             .addConverterFactory(JacksonConverterFactory.create())
             .build()
     }

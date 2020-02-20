@@ -3,10 +3,8 @@ package br.com.caelum.casadocodigo.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.casadocodigo.R
@@ -26,14 +24,7 @@ class AutorActivity : AppCompatActivity() {
         autorViewModel.erroNome.observe(this, Observer { nome_autor.error = it })
         autorViewModel.erroGithubLink.observe(this, Observer { linkGithub_autor.error = it })
 
-        autorViewModel.formValido.observe(this, Observer { valido ->
-            valido?.let {
-                if (valido) {
-                    val autor = pegaDadosDoAutor()
-                    autorViewModel.salva(autor)
-                }
-            }
-        })
+        autorViewModel.autorValido.observe(this, Observer { autorViewModel.salva(it) })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

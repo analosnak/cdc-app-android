@@ -1,8 +1,6 @@
 package br.com.caelum.casadocodigo.viewmodel
 
 import android.util.Patterns
-import android.widget.EditText
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,43 +9,38 @@ import br.com.caelum.casadocodigo.repository.AutorRepository
 import br.com.caelum.casadocodigo.web.AutorWebClient
 
 class AutorViewModel private constructor(private val autorRepository: AutorRepository) : ViewModel() {
-    private val nomeValido = MutableLiveData<Boolean>()
-    private val githubLinkValido = MutableLiveData<Boolean>()
+    private val nomeValido = MutableLiveData<String>()
+    private val githubLinkValido = MutableLiveData<String>()
+    val autorValido = MutableLiveData<Autor>()
     val erroNome = MutableLiveData<String>()
     val erroGithubLink = MutableLiveData<String>()
 
-    val formValido = MediatorLiveData<Boolean>().apply {
-        addSource(githubLinkValido) { urlEhValida ->
-            value = nomeValido.value?.and(urlEhValida)
-        }
-        addSource(nomeValido) { nomeEhValido ->
-            value = githubLinkValido.value?.and(nomeEhValido)
-        }
-    }
-
     fun validaForm(nomeAutor: String, linkgithubAutor: String) {
-        validaNome(nomeAutor)
-        validaUrl(linkgithubAutor)
-    }
-
-    private fun validaNome(nome: String) {
-        if (nome.isBlank()) {
-            nomeValido.postValue(false)
-            erroNome.postValue("O nome é obrigatório")
-        } else {
-            nomeValido.postValue(true)
+        if (isNomeValido(nomeAutor) && isUrlValida(linkgithubAutor)) {
+            autorValido.postValue(Autor(nomeAutor, linkgithubAutor))
         }
     }
 
-    private fun validaUrl(githubLink: String) {
-        if (githubLink.isBlank()) {
-            githubLinkValido.postValue(false)
-            erroGithubLink.postValue("A URL é obrigatória")
-        } else if (!Patterns.WEB_URL.matcher(githubLink).matches()) {
-            githubLinkValido.postValue(false)
-            erroGithubLink.postValue("URL inválida")
+    private fun isNomeValido(nome: String): Boolean {
+        if (nome.isBlank()) {
+            erroNome.postValue("O nome é obrigatório")
+            return false
         } else {
-            githubLinkValido.postValue(true)
+            nomeValido.postValue(nome)
+            return true
+        }
+    }
+
+    private fun isUrlValida(githubLink: String): Boolean {
+        if (githubLink.isBlank()) {
+            erroGithubLink.postValue("A URL é obrigatória")
+            return false
+        } else if (!Patterns.WEB_URL.matcher(githubLink).matches()) {
+            erroGithubLink.postValue("URL inválida")
+            return false
+        } else {
+            githubLinkValido.postValue(githubLink)
+            return true
         }
     }
 
