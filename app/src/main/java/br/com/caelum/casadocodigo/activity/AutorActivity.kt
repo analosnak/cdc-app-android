@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_autor.*
 class AutorActivity : AppCompatActivity() {
     
     private val autorViewModel: AutorViewModel by lazy {
-        ViewModelProvider(this, AutorViewModel.Factory).get(AutorViewModel::class.java)
+        ViewModelProvider(this).get(AutorViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
