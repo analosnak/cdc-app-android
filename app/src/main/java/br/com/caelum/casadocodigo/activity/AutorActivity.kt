@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.casadocodigo.R
-import br.com.caelum.casadocodigo.model.Autor
 import br.com.caelum.casadocodigo.viewmodel.AutorViewModel
 import kotlinx.android.synthetic.main.activity_autor.*
 
 class AutorActivity : AppCompatActivity() {
     
     private val autorViewModel: AutorViewModel by lazy {
-        ViewModelProvider(this).get(AutorViewModel::class.java)
+        ViewModelProvider(this, AutorViewModel.Factory).get(AutorViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +26,10 @@ class AutorActivity : AppCompatActivity() {
         autorViewModel.erroGithubLink.observe(this, Observer { linkGithub_autor.error = it })
 
         autorViewModel.autorValido.observe(this, Observer { autorViewModel.salva(it) })
+
+        autorViewModel.mensagemProToast.observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
