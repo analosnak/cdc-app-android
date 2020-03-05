@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.casadocodigo.model.Autor
 import br.com.caelum.casadocodigo.repository.AutorRepository
+import br.com.caelum.casadocodigo.web.AutorService
 import br.com.caelum.casadocodigo.web.AutorWebClient
 import br.com.caelum.casadocodigo.web.InicializadorDeRetrofit
 
@@ -17,12 +18,12 @@ class AutorViewModel private constructor(private val autorRepository: AutorRepos
     val erroGithubLink = MutableLiveData<String>()
     val mensagemProToast = autorRepository.mensagemProToast
 
-    fun validaForm(nomeAutor: String, linkgithubAutor: String) {
+    fun validaForm(nomeAutor: String, linkGithubAutor: String) {
         val nomeEhValido = isNomeValido(nomeAutor)
-        val urlEhValida = isUrlValida(linkgithubAutor)
+        val urlEhValida = isUrlValida(linkGithubAutor)
 
         if (nomeEhValido && urlEhValida) {
-            autorValido.postValue(Autor(nomeAutor, linkgithubAutor))
+            autorValido.postValue(Autor(nomeAutor, linkGithubAutor))
         }
     }
 
@@ -52,7 +53,9 @@ class AutorViewModel private constructor(private val autorRepository: AutorRepos
     fun salva(autor: Autor) = autorRepository.salva(autor)
 
     object Factory : ViewModelProvider.Factory {
-        private val autorWebClient = AutorWebClient(InicializadorDeRetrofit.retrofit)
+        private val autorService = InicializadorDeRetrofit.retrofit
+            .create(AutorService::class.java)
+        private val autorWebClient = AutorWebClient(autorService)
         private val autorRepository = AutorRepository(autorWebClient)
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = AutorViewModel(autorRepository) as T

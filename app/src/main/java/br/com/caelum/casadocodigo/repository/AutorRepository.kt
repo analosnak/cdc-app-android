@@ -21,8 +21,8 @@ class AutorRepository(private val client: AutorWebClient) {
         mensagemProToast.value = "Não comunicou com o servidor"
     }
 
-    val falha: (Autor, Response<Unit?>) -> Unit = { autor: Autor, response: Response<Unit?> ->
-        Log.i("FALHA", "autor ${autor.nome} não rolou ${response.raw()}")
+    val falha: (Autor, String) -> Unit = { autor: Autor, mensagem: String ->
+        Log.i("FALHA", "autor ${autor.nome} não rolou $mensagem")
         mensagemProToast.value = "autor ${autor.nome} não rolou salvar"
     }
 

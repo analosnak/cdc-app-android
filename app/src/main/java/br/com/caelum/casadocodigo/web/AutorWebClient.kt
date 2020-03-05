@@ -1,22 +1,19 @@
 package br.com.caelum.casadocodigo.web
 
-import android.util.Log
 import br.com.caelum.casadocodigo.model.Autor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-class AutorWebClient(retrofit: Retrofit) {
-    private val autorService = retrofit.create(AutorService::class.java)
+class AutorWebClient(private val autorService: AutorService) {
 
     fun salva(
         autor: Autor,
         sucesso: (Autor) -> Unit,
         erroServidor: (Throwable) -> Unit,
-        falha: (Autor, Response<Unit?>) -> Unit
+        falha: (Autor, String) -> Unit
     ) {
 
         autorService.salva(autor).enqueue(object : Callback<Unit?> {
@@ -28,7 +25,7 @@ class AutorWebClient(retrofit: Retrofit) {
                 if (response.isSuccessful) {
                     sucesso(autor)
                 } else {
-                    falha(autor, response)
+                    falha(autor, response.message())
                 }
             }
 
@@ -37,7 +34,7 @@ class AutorWebClient(retrofit: Retrofit) {
 
 }
 
-private interface AutorService {
+interface AutorService {
     @POST("/api/autor")
     fun salva(@Body autor: Autor): Call<Unit?>
 }
